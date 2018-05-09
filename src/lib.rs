@@ -2,25 +2,18 @@ extern crate pnet;
 
 use std::io::{Error, ErrorKind};
 use std::net::{Ipv4Addr};
-use pnet::datalink::{NetworkInterface};
 use pnet::packet::ipv4::{MutableIpv4Packet};
 use pnet::packet::udp::MutableUdpPacket;
 use pnet::packet::ip::{IpNextHeaderProtocols};
 use pnet::packet::{MutablePacket};
-//transport use
-// use pnet::transport::{transport_channel, TransportSender};
-// use pnet::transport::TransportProtocol::Ipv4;
-// use pnet::transport::TransportChannelType::Layer4;
-//use pnet_datalink::{NetworkInterface};
-
 
 //testing
 use pnet::transport::transport_channel;
 use pnet::transport::TransportChannelType::Layer3;
 use std::net::IpAddr;
 
+/// This is the packet to be crafted and sent
 pub struct CraftedUdp {
-    pub interface: NetworkInterface,
     pub source_ip: Ipv4Addr,
     pub dest_ip: Ipv4Addr,
     pub source_port: u16,
@@ -28,6 +21,7 @@ pub struct CraftedUdp {
     pub data: Vec<u8>,
 }
 impl CraftedUdp {
+    /// Sends the packet
     pub fn send_packet(&self) -> Result<(), std::io::Error> {
         let protocol = Layer3(IpNextHeaderProtocols::Udp);
         //create a channel
